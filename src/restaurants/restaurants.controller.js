@@ -2,8 +2,10 @@ const service = require("./restaurants.service.js");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 async function averageRating(req, res, next) {
-  // your solution here
-  res.json({ data: {} });
+  // My solution:
+  const ratingReturned = await service.averageRating();
+  const { average_rating } = ratingReturned[0];
+  res.json({ data: { average_rating: Number(average_rating) } });
 }
 
 async function list(req, res) {
@@ -11,17 +13,15 @@ async function list(req, res) {
 }
 
 async function count(req, res, next) {
-  // your solution here
-  res.json({ data: {} });
+  // My solution:
+  const countReturn = await service.count();
+  const { count } = countReturn[0];
+  res.json({ data: { count: Number(count) } });
 }
 
 async function create(req, res, next) {
-  const newRestaurant = ({
-    restaurant_name,
-    address,
-    cuisine,
-    rating,
-  } = req.body.data);
+  const newRestaurant = ({ restaurant_name, address, cuisine, rating } =
+    req.body.data);
   const createdRestaurant = await service.create(newRestaurant);
   res.status(201).json({ data: createdRestaurant });
 }
@@ -31,8 +31,8 @@ async function read(req, res) {
 }
 
 async function readHighestRated(req, res, next) {
-  // your solution here
-  res.json({ data });
+  // My solution:
+  res.json({ data: await service.readHighestRated() });
 }
 
 async function restaurantExists(req, res, next) {
